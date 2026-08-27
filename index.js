@@ -4,7 +4,7 @@ function startBot() {
   console.log('Starting MoonLightBot...');
 
   const bot = mineflayer.createBot({
-    host: 'Moon-LightSMP.aternos.me',
+    host: 'Dragon-mc.aternos.me',
     port: 59735,
     username: 'MoonLightBot',
     auth: 'offline',
