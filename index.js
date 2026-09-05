@@ -3,10 +3,7 @@ const mineflayer = require('mineflayer');
 function startBot() {
   console.log('Starting MoonLightBot...');
 
-  const bot = mineflayer.createBot({bot.on('resourcePack', () => {
-  console.log('Texture pack received!');
-  bot.acceptResourcePack();
-});
+  const bot = mineflayer.createBot({
     host: 'Dragon-mc.aternos.me',
     port: 59735,
     username: 'MoonLightBot',
@@ -54,3 +51,7 @@ function startBot() {
 }
 
 startBot();
+bot.on('resourcePack', () => {
+  console.log('Texture pack received!');
+  bot.acceptResourcePack();
+});
