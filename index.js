@@ -1,30 +1,61 @@
 const mineflayer = require('mineflayer');
 
-const bot = mineflayer.createBot({
-  host: 'Dragon-mc.aternos.me',
-  port: 59735,
-  username: 'moonlight_bot',
-  version: false
-});
+const HOST = 'Dragon-mc.aternos.me';
+const PORT = 59735;
+const USERNAME = 'DragonBot';
 
-// Resource / Texture Pack
-bot.on('resourcePack', () => {
-  console.log('Texture pack received!');
-  bot.acceptResourcePack();
-});
+function createBot() {
+  const bot = mineflayer.createBot({
+    host: HOST,
+    port: PORT,
+    username: USERNAME,
+    version: false
+  });
 
-bot.once('spawn', () => {
-  console.log('✅ Bot joined the server!');
-});
+  bot.once('spawn', () => {
+    console.log('✅ DragonBot joined!');
 
-bot.on('kicked', (reason) => {
-  console.log('❌ Bot kicked:', reason);
-});
+    setInterval(() => {
+      bot.setControlState('forward', true);
 
-bot.on('error', (err) => {
-  console.log('❌ Error:', err.message);
-});
+      setTimeout(() => {
+        bot.setControlState('forward', false);
+        bot.setControlState('jump', true);
 
-bot.on('end', () => {
-  console.log('🔄 Bot disconnected.');
-});
+        setTimeout(() => {
+          bot.setControlState('jump', false);
+          bot.setControlState('back', true);
+
+          setTimeout(() => {
+            bot.setControlState('back', false);
+          }, 2000);
+
+        }, 500);
+      }, 3000);
+    }, 7000);
+  });
+
+  bot.on('resourcePack', () => {
+    console.log('📦 Texture pack received!');
+    try {
+      bot.acceptResourcePack();
+    } catch (err) {
+      console.log('Resource pack error:', err.message);
+    }
+  });
+
+  bot.on('kicked', reason => {
+    console.log('❌ Kicked:', reason);
+  });
+
+  bot.on('error', err => {
+    console.log('❌ Error:', err.message);
+  });
+
+  bot.on('end', () => {
+    console.log('🔄 Reconnecting in 10 seconds...');
+    setTimeout(createBot, 10000);
+  });
+}
+
+createBot();
