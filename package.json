@@ -1,11 +1,11 @@
 {
-  "name": "moonlight_bot",
+  "name": "minecraft-afk-bot",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "mineflayer": "latest"
+    "mineflayer": "^4.31.0"
   }
 }
