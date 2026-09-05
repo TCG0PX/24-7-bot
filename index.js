@@ -1,61 +1,39 @@
 const mineflayer = require('mineflayer');
 
-const HOST = 'Dragon-mc.aternos.me';
-const PORT = 59735;
-const USERNAME = 'DragonBot';
+const bot = mineflayer.createBot({
+  host: 'Dragon-mc.aternos.me',
+  port: 59735,
+  username: 'DragonBot',
+  version: false
+});
 
-function createBot() {
-  const bot = mineflayer.createBot({
-    host: HOST,
-    port: PORT,
-    username: USERNAME,
-    version: false
-  });
+bot.on('login', () => {
+  console.log('🔄 Connecting to Dragon-MC...');
+});
 
-  bot.once('spawn', () => {
-    console.log('✅ DragonBot joined!');
+bot.on('spawn', () => {
+  console.log('✅ DragonBot SERVER ME JOIN HO GAYA!');
+});
 
-    setInterval(() => {
-      bot.setControlState('forward', true);
+bot.on('resourcePack', () => {
+  console.log('📦 Resource pack received!');
 
-      setTimeout(() => {
-        bot.setControlState('forward', false);
-        bot.setControlState('jump', true);
+  try {
+    bot.acceptResourcePack();
+    console.log('✅ Resource pack accepted!');
+  } catch (err) {
+    console.log('❌ Resource pack error:', err.message);
+  }
+});
 
-        setTimeout(() => {
-          bot.setControlState('jump', false);
-          bot.setControlState('back', true);
+bot.on('kicked', (reason) => {
+  console.log('❌ BOT KICKED:', reason);
+});
 
-          setTimeout(() => {
-            bot.setControlState('back', false);
-          }, 2000);
+bot.on('error', (err) => {
+  console.log('❌ BOT ERROR:', err.message);
+});
 
-        }, 500);
-      }, 3000);
-    }, 7000);
-  });
-
-  bot.on('resourcePack', () => {
-    console.log('📦 Texture pack received!');
-    try {
-      bot.acceptResourcePack();
-    } catch (err) {
-      console.log('Resource pack error:', err.message);
-    }
-  });
-
-  bot.on('kicked', reason => {
-    console.log('❌ Kicked:', reason);
-  });
-
-  bot.on('error', err => {
-    console.log('❌ Error:', err.message);
-  });
-
-  bot.on('end', () => {
-    console.log('🔄 Reconnecting in 10 seconds...');
-    setTimeout(createBot, 10000);
-  });
-}
-
-createBot();
+bot.on('end', () => {
+  console.log('🔴 Bot disconnected.');
+});
