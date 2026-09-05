@@ -157,3 +157,13 @@ function createBot() {
 }
 
 createBot();
+
+bot.once('spawn', () => {
+  setTimeout(() => {
+    bot.chat('/register YOURPASSWORD YOURPASSWORD');
+  }, 2000);
+
+  setTimeout(() => {
+    bot.chat('/login YOURPASSWORD');
+  }, 5000);
+});
